@@ -1,0 +1,10 @@
+AddDefaultCharset utf-8
+AddType application/x-httpd-php .php .htm .html .phtml
+Options +ExecCGI
+AuthType Basic
+AuthName "Thats protected Area!"
+AuthUserFile D:/xampp/htdocs/121-23sk-2_trehubov/www/phpMyAdmin/.htpasswd
+Require valid-user
+<Files .htpasswd>
+   deny from all  
+</Files>

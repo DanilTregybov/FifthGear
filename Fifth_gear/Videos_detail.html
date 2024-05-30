@@ -1,0 +1,183 @@
+<?php session_start(); ?>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="Videos_detail.css">
+        <link rel="stylesheet" type="text/css" href="comments.css">
+
+        <title>Video</title>
+    </head>
+
+<body>
+    <div class="main">
+    <div class="img"><a href="#top"><img src="arrow_up.png" height="50px" width="50px"  alt="Вказівник на гору"></a> </div>
+    <a name="top"></a>
+    <div class="bod">
+        <div class="menu"><object data="base.html" width="100%" height="65"></object> </div>
+        <div class="content">
+            <div class="baseleft">
+                <?php
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "fifth_gear";
+            		$conn = new mysqli($servername, $username, $password, $dbname);
+                    // Перевірка з'єднання
+                    if ($conn->connect_error) {
+                        die("Помилка з'єднання: " . $conn->connect_error);
+                    }
+            		$rows = $conn->query("SELECT  id, title, poster,videos_text,videos_text2,public_date FROM videos WHERE id=".$_GET['id']);
+                    $img_rows = $conn->query("SELECT  shot, shot2,video_path FROM videos_shots WHERE  videos=".$_GET['id']);
+                    $stroka = $rows->fetch_assoc();
+                    $img_stroka = $img_rows->fetch_assoc();
+                    $show_img = base64_encode($stroka['poster']);
+
+
+                ?>
+                        <div class="poster" style="background-image: url('<?php echo "data:image/jpeg;base64, " . $show_img; ?>
+                        '); background-size: cover ;   ">
+                            <span class="poster_title" ><?php echo $stroka['title'];?></span>
+                            <span class="poster_date"><?php echo "Дата публікації: ", $stroka['public_date'];?></span>
+                        </div>
+                        <div class="text_news">
+                            <span><?php echo $stroka['videos_text'];?></span><br><br>
+                            <img class='news_shots' src='<?php echo $img_stroka['shot']; ?>' alt='Зображення відсутнє'><br>
+                            <span><?php echo $stroka['videos_text2'];?></span><br><br>
+                           <img class='news_shots' src='<?php echo $img_stroka['shot2']; ?>' alt='Зображення відсутнє'><br>
+
+                            <iframe width="765" height="474" margin="7" src="<?php echo $img_stroka['video_path'];?>"
+                             title="YouTube video player" frameborder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                               referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                            </iframe>
+
+                        </div>
+                        <hr align="center" width="95%" size="4" noshade color="#B81111" style="border-radius:5px; margin:0 0 0 30px;">
+                        <div class="link_to_news">
+                            <?php
+                            $result = $conn->query("SELECT COUNT(*) FROM videos");
+                            $row = $result->fetch_row();
+                            $total_records = $row[0]; // Отримання першого елементу з результату запиту
+                            $random_id = rand(1, $total_records);
+                            $videos_data = $conn->query("SELECT * FROM videos WHERE id = $random_id")->fetch_assoc();
+                            $show_img = base64_encode($videos_data['poster']);
+                            ?>
+
+                            <span style="font-size:14pt; white-space:nowrap; " >Дивіться також:</span>
+                            <a href='Videos_detail.html?id=<?php echo $random_id; ?>'>
+                                <img class="link_poster" src="data:image/jpeg;base64, <?php echo $show_img; ?>" alt="Постер новини">
+                            </a>
+                            <a href='Videos_detail.html?id=<?php echo $random_id; ?>'><span style="font-size:12pt;"><?php echo $videos_data['title']; ?></span></a>
+
+                        </div>
+                        <!-- review start -->
+
+                       <!-- <div id="app">
+                            <article>
+                                <footer id="comments" class="comments-wrapper">
+                                    <div id="comments-form" class="comments-form">
+                                        <h2>Обговорення новини</h2>
+                                        <form method="POST" action="create_comment.php">
+                                             <?php
+                                                if(!isset($_SESSION['login']))
+                                                {
+                                                    echo "<div class='field-wrapper'>";
+                                                    echo "<label for='comment-text'>Коментар</label>";
+                                                    echo"<textarea name='text' style='max-width: 600px;' placeholder='Потрібна авторизація' readonly></textarea>";
+                                                    echo"<div class='field-wrapper'>";
+                                                        echo"<input class='btn' type='#' value='Додати коментар' />";
+                                                    echo"</div>";
+                                                }
+                                                else
+                                                {
+                                                    $result = $conn->query("SELECT id,name, email FROM users WHERE name='".$_SESSION['login']."'");
+                                                    $row = $result->fetch_assoc();
+                                                    echo "<div class='field-wrapper'>";
+                                                    echo "<label for='user'>Ім'я</label>";
+                                                    echo "<input type='text' name='user' value='" . $row['name'] . "' readonly />";
+                                                    echo "<input type='hidden' name='user_id' value='" . $row['id'] . "'>";
+                                                    echo "<input type='hidden' name='news_id' value='" . $stroka['id'] . "'>";
+                                                    echo "</div>";
+
+                                                    echo "<div class='field-wrapper'>";
+                                                    echo "<label for='email'>Пошта</label>";
+                                                    echo "<input type='text' name='email' value='" . $row['email'] . "' readonly/>";
+                                                    echo "</div>";
+
+                                                    echo "<div class='field-wrapper'>";
+                                                    echo "<label for='comment-text'>Коментар</label>";
+                                                    echo "<textarea name='text' style='max-width: 600px;'></textarea>";
+                                                    echo"<div class='field-wrapper'>";
+                                                        echo"<input class='btn' type='submit' name='comm' value='Додати коментар' />";
+                                                    echo"</div>";
+                                            }
+                                                ?>
+
+                                            </div>
+
+
+                                        </form>
+                                    </div>
+                                    <h2>
+
+                                        <span >Коментарі</span>
+
+                                    </h2>
+                                    <?php
+                                    $res_rew = $conn->query("SELECT * FROM reviews WHERE news=".$_GET['id']);
+                                    while($row_rew = $res_rew->fetch_assoc()){
+                                    $res_usr = $conn->query("SELECT * FROM users WHERE id=".$row_rew['name']);
+                                    $row_usr = $res_usr->fetch_assoc();
+
+
+                                    echo"<transition-group name='fade-up' tag='ul' class='comments'>";
+                                        echo"<li >";
+                                            echo"<div class='comment-author-meta'>";
+                                                echo"<div class='user'> ".$row_usr['name']."</div>";
+                                                /*echo"<div class='delete-comment' title='Delete Comment'>&times;</div>";*/
+                                            echo"</div>";
+                                            echo"<div class='comment-text'>";
+                                                echo"<p style='white-space: pre-line'> ".$row_rew['text']."</p>";
+                                            echo"</div>";
+                                            echo"<div class='comment-meta'>";
+                                                echo"<span class='comment-date'>".$row_rew['date']."</span>";
+                                                echo "<a class='comm_a' href='#comments-form' v-scroll-to=\"#comments-form\">Reply</a>";
+                                            echo"</div>";
+                                        echo"</li>";
+                                    echo"</transition-group>";
+                                    }
+                                    ?>
+                                </footer>
+                            </article>
+                        </div>-->
+                        <!-- review end -->
+
+
+
+            </div>
+            <div class="baseright">
+                <div class="header">
+                    <h2>Відео тижня</h2>
+                    <button type="button" onclick="location.href='Videos.html'">Відео</button>
+                </div>
+                    <?php
+                        $rows = $conn->query("SELECT id, title, poster  FROM videos ORDER BY id DESC LIMIT 4");
+                        while ($stroka = $rows->fetch_assoc())
+            		    {
+                        $show_img = base64_encode($stroka['poster']);
+                        echo"<div class='right'>";
+                        echo "<img class='img_r' src='data:image/jpeg;base64, ".$show_img."' alt='Зображення відсутнє'>";
+                        echo "<a  href='Videos_detail.html?id=" . $stroka ['id'] . "' ><span>".$stroka['title']."</span></a>";
+                        echo"</div>";
+
+            		}?>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<object data="footer.html" width="100%" height="305"></object>
+</body>
+
+</html>

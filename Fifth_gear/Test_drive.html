@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="Test_drive.css">
+<title>Testdrives</title>
+<meta name="keywords" content="Тест-драйви авто, Автомобільні випробування, Відгуки про авто, Враження від тестування">
+<meta name="description" content="Поглиблені тест-драйви автомобілів з оглядом їх особливостей, переваг та недоліків. Відгуки експертів і враження від випробувань нових автомобілів.">
+
+</head>
+
+<body>
+<div class="bod">
+<div class="menu"><object data="base.html" width="100%" height="65"></object> </div>
+<div class="content">
+<div class="baseleft">
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fifth_gear";
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Перевірка з'єднання
+if ($conn->connect_error) {
+die("Помилка з'єднання: " . $conn->connect_error);
+}
+$limit = 9;
+/*$rows = mysql_query("SELECT *  FROM Testdrives");*/
+$rows = $conn->query("SELECT * FROM Testdrives");
+$total_rows = $rows->num_rows;
+$total_pages = ceil ($total_rows / $limit);
+if (!isset ($_GET['page']) ) {
+
+$page_number = 1;
+
+} else {
+
+$page_number = $_GET['page'];
+
+}
+$initial_page = ($page_number-1) * $limit;
+$res = $conn->query("SELECT * FROM Testdrives LIMIT " . $initial_page . ',' . $limit);
+
+while ($stroka = $res->fetch_array())
+{$show_img = base64_encode($stroka['poster']);
+echo"<div class='left'>";
+echo "<img src='data:image/jpeg;base64, ".$show_img."' alt='Зображення відсутнє' onclick=\"window.location.href='News_detail.html?id=" . $stroka['id'] . "'\">";
+
+echo "<a href='Testdrive_detail.html?id=" . $stroka ['id'] . "'><span>".$stroka['title']."</span></a>";
+echo"</div>";
+}
+echo "<div class='pag'>";
+echo "<ul class='pagination'>";
+for ($page_number = 1; $page_number <= $total_pages; $page_number++) {
+echo '<li><a href="Test_drive.html?page=' . $page_number . '">' . $page_number . '</a></li>';
+}
+echo "</ul>";
+echo "</div>";
+?>
+</div>
+<div class="baseright">
+<div class="header">
+<h2>Останні додані</h2>
+<button type="button" onclick="location.href='Home_page.html'">На головну</button>
+
+</div>
+<?php
+$rows = $conn->query("SELECT id, title, poster  FROM testdrives ORDER BY id DESC LIMIT 5");
+while ($stroka = $rows->fetch_array())
+{$show_img = base64_encode($stroka['poster']);
+echo"<div class='right'>";
+echo "<img src='data:image/jpeg;base64, ".$show_img."' alt='Зображення відсутнє' onclick=\"window.location.href='Testdrive_detail.html?id=" . $stroka['id'] . "'\">";
+echo "<a  href='Testdrive_detail.html?id=" . $stroka ['id'] . "' ><span>".$stroka['title']."</span></a>";
+echo"</div>";
+}?>
+</div>
+</div>
+
+</div>
+<object data="footer.html" width="100%" height="305"></object>
+</body>
+
+</html>

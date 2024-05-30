@@ -1,0 +1,246 @@
+<?php /*session_start();*/?>
+<!--<html>
+    <head>
+        <title>Five Gear</title>
+        <link rel="stylesheet" type="text/css" href="base.css">
+    </head>
+      <header>
+          <table width="86%" height="10%" bgcolor="white" align="center">
+              <tr>
+                <td  width="100" height="40"><a target="_parent" href="Home_page.html"><img src="logo.png" style="max-width:100%"></a></td>
+                <td>
+                  <a target="_parent" class="text" href="News.html">Новини</a>
+                  <a target="_parent" class="text" href="Videos.html">Відео</a>
+                  <a target="_parent" class="text" href="Test_drive.html">Тест-драйви</a>
+                  <a target="_parent" class="text" href="About_us.html">Про нас</a>
+                </td>
+                <td align="right">
+
+                     <?php
+                        if(!isset($_SESSION['login']))
+                        {
+                            echo "<a target='_parent' href='New_Registration.html'>";
+                            echo "<button class='but-reg' type='button'>Реєстрація</button></a> &nbsp;";
+                            echo "<a target='_parent' href='New_Login.html'>";
+                            echo "<button class='but-sig' type='button'>Вхід</button></a></td>";
+                        }
+                        else
+                        {
+                        echo $_SESSION['login']." &nbsp; ";
+                        echo "<a target='_parent' href='logout_news.php'>";
+                        echo "<button class='but-logout' type='button'>Вихід</button></a></td>";
+                        }
+                        ?>
+            </tr>
+
+            </table>
+      </header>
+</html>-->
+<?php session_start(); ?>
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Five Gear</title>
+    <link rel="stylesheet" type="text/css" href="base.css">
+    <style>
+        #logo-container {
+            position: relative;
+            width: 100px;
+            height: 40px;
+        }
+        #elemToMove {
+            position: absolute;
+            /*top: 50%;
+            left: 100%;
+            transform: translate(-50%, -50%);
+            display: none;
+            color: white;
+            font-weight: bold;*/
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <table width="86%" height="10%" bgcolor="white" align="center">
+            <tr>
+                <td id="logo-container">
+                    <a target="_parent" href="Home_page.html">
+                        <img id="logo" src="logo.png" style="max-width:100%">
+
+                        <div id="elemToMove">🌌</div>
+                    </a>
+                </td>
+                <td>
+                    <a target="_parent" class="text" href="News.html">Новини</a>
+                    <a target="_parent" class="text" href="Videos.html">Відео</a>
+                    <a target="_parent" class="text" href="Test_drive.html">Тест-драйви</a>
+                    <a target="_parent" class="text" href="About_us.html">Про нас</a>
+                </td>
+                <td align="right">
+                    <?php
+                    if(!isset($_SESSION['login']))
+                    {
+                        echo "<a target='_parent' href='New_Registration.html'>";
+                        echo "<button class='but-reg' type='button'>Реєстрація</button></a> &nbsp;";
+                        echo "<a target='_parent' href='New_Login.html'>";
+                        echo "<button class='but-sig' type='button'>Вхід</button></a></td>";
+                    }
+                    else
+                    {
+                        echo $_SESSION['login']." &nbsp; ";
+                        echo "<a target='_parent' href='logout_news.php'>";
+                        echo "<button class='but-logout' type='button'>Вихід</button></a></td>";
+                    }
+                    ?>
+            </tr>
+        </table>
+    </header>
+
+    <script>
+        // Отримуємо елементи з DOM
+        const logoContainer = document.getElementById('logo-container');
+        const welcomeText = document.getElementById('elemToMove');
+
+        // Додаємо обробник події mousemove до контейнера з логотипом
+        logoContainer.addEventListener('mousemove', (event) => {
+            // Позиція напису "Welcome" поряд з курсором миші
+            welcomeText.style.display = 'block';
+            welcomeText.style.top = `${event.clientY}px`;
+            welcomeText.style.left = `${event.clientX-90}px`; // Додатковий відступ від курсора
+
+            // Обертання напису "Welcome" навколо своєї осі
+            welcomeText.style.transform = `rotate(${event.clientX * 1}deg)`;
+        });
+
+        // При виході миші з контейнера приховуємо напис "Welcome"
+        logoContainer.addEventListener('mouseleave', () => {
+            welcomeText.style.display = 'none';
+        });
+    </script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Fifth Gear</title>
+<link rel="stylesheet" type="text/css" href="base.css">
+<style>
+#logo-container {
+position: relative;
+width: 100px;
+height: 40px;
+background-image: url(logo.png);
+background-size:83px 25px;
+background-repeat:no-repeat;
+background-position: center;
+
+}
+#elemToMove {
+position: absolute;
+/*top: 50%;
+left: 100%;
+transform: translate(-50%, -50%);
+
+color: white;
+font-weight: bold;*/
+
+left: 50%;
+top: 50%;
+/*transform: translate(-50%, -50%);*/
+}
+</style>
+</head>
+<body>
+<header>
+<table width="86%" height="10%" bgcolor="white" align="center">
+<tr>
+<td id="logo-container" >
+<a target="_parent" href="Home_page.html">
+    <img id="elemToMove" src="" style="max-width:46%">
+
+    <!--<div id="elemToMove">🌌</div> -->
+</a>
+</td>
+<td>
+<a target="_parent" class="text" href="News.html">Новини</a>
+<a target="_parent" class="text" href="Videos.html">Відео</a>
+<a target="_parent" class="text" href="Test_drive.html">Тест-драйви</a>
+<a target="_parent" class="text" href="About_us.html">Про нас</a>
+</td>
+<td align="right">
+<?php
+if(!isset($_SESSION['login']))
+{
+    echo "<a target='_parent' href='New_Registration.html'>";
+    echo "<button class='but-reg' type='button'>Реєстрація</button></a> &nbsp;";
+    echo "<a target='_parent' href='New_Login.html'>";
+    echo "<button class='but-sig' type='button'>Вхід</button></a></td>";
+}
+else
+{
+    echo $_SESSION['login']." &nbsp; ";
+    echo "<a target='_parent' href='logout_news.php'>";
+    echo "<button class='but-logout' type='button'>Вихід</button></a></td>";
+}
+?>
+</tr>
+</table>
+</header>
+
+    <script>
+        // Отримуємо елементи з DOM
+
+        /*const welcomeText = document.getElementById('elemToMove'); */
+
+        // Додаємо обробник події mousemove до контейнера з логотипом
+        /*logoContainer.addEventListener('mousemove', (event) => {
+            // Позиція напису "Welcome" поряд з курсором миші
+            welcomeText.style.display = 'block';
+            welcomeText.style.top = `${event.clientY}px`;
+            welcomeText.style.left = `${event.clientX-90}px`; // Додатковий відступ від курсора
+
+            // Обертання напису "Welcome" навколо своєї осі
+            welcomeText.style.transform = `rotate(${event.clientX * 1}deg)`;
+        });*/
+
+        // При виході миші з контейнера приховуємо напис "Welcome"
+
+
+        /*----------------------------------------*/
+var logoContainer = document.getElementById('logo-container');
+var elemToMove = document.getElementById('elemToMove');
+
+// Функція, що викликається при русі миші
+function rotateAroundCursor(event) {
+logoContainer.style.backgroundImage='url(" ")';
+elemToMove.style.display = 'block';
+elemToMove.src = 'animation_logo.png'
+var mouseX = event.clientX;  // Позиція X курсора миші
+var mouseY = event.clientY;  // Позиція Y курсора миші
+
+// Обчислюємо відстань від центру елементу до позиції курсора
+var rect = elemToMove.getBoundingClientRect();
+var elemCenterX = rect.left + rect.width / 2;
+var elemCenterY = rect.top + rect.height / 2;
+
+var deltaX = mouseX - elemCenterX;
+var deltaY = mouseY - elemCenterY;
+
+// Обчислюємо кут обертання
+var angle = Math.atan2(deltaY, deltaX);
+var rotationAngle = angle * (100 / Math.PI);  // Перетворюємо радіани в градуси
+
+// Встановлюємо обертання елементу
+elemToMove.style.transform = `translate(-50%, -50%) rotate(${rotationAngle}deg)`;
+}
+
+// Встановлюємо обробник події для руху миші
+logoContainer.addEventListener('mousemove', rotateAroundCursor);
+
+logoContainer.addEventListener('mouseleave', () => {
+elemToMove.style.display = 'none';
+logoContainer.style.backgroundImage='url("logo.png")';
+});
+</script>
+</body>
+</html>

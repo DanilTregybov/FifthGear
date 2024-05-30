@@ -1,0 +1,60 @@
+.text{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+    text-decoration:none;
+}
+.text:hover{
+    color: #C02D2D;
+    text-decoration-line: underline;
+}
+
+
+.but-reg{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+}
+.but-reg:hover {
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: white;
+    background-color:#6FACE4;
+    cursor:pointer;
+}
+.but-sig{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+    margin-right: 17px;
+}
+.but-sig:hover {
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: white;
+    background-color:green;
+    cursor:pointer;
+
+}
+.but-logout{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: black;
+    margin-right: 17px;
+}
+.but-logout:hover {
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: white;
+    background-color:#C02D2D;
+    cursor:pointer;
+
+}
+/*///////////////////////////////////////////////////////////////////*/

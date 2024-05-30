@@ -1,0 +1,40 @@
+body{
+    background-color: #F5F5F5;
+}
+
+span{
+    font-family: "Times New Roman", Times, serif;
+    font-size:13pt;
+    line-height:21px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.soc_y:hover{
+    color: red;
+    
+}
+.soc_tf:hover{
+    color: #007ACC;
+
+}
+table{
+    background-color: white;
+}
+.td_color{
+    background-color: #F5F5F5;
+}
+ ::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    background: #272727;
+    border-radius:5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #B81111;
+    border-radius:5px;
+}

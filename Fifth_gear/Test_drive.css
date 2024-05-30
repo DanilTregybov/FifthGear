@@ -1,0 +1,186 @@
+body{
+    background-color: #F5F5F5;
+    font-family: "Times New Roman", Times, serif;
+    font-size:12pt;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+/*a:hover{
+    color: #B81111;
+    cursor:pointer;
+}*/
+
+.bod{
+    display: flex;
+    justify-content: center; /* Центрування по горизонталі */
+    align-items: center;
+
+    background-color: #F5F5F5;
+    width: 100%;
+    flex-direction: column;
+}
+
+.menu{
+
+    width: 100%;
+}
+.content{
+    display: flex;
+    justify-content: center; /* Центрування по горизонталі */
+    align-items: center start;
+    width: 85%;
+    height: 700px; 
+    background-color: white;
+    border-style:solid;
+    border-color: lightgrey;
+    border-width: 0px;
+}
+
+.baseleft{
+    width: 70%;
+    background-color: white;
+    border-style:solid;
+    border-color: #0A0100;
+    border-width: 0px;
+}
+
+.baseleft img {
+    width:100%;
+    height:150px;
+}
+.baseright{
+
+    width: 30%;
+    height: 500px;
+    background-color: white;
+    border-style:solid;
+    border-color: orange;
+    border-width: 0px;
+}
+.left{
+    width: 30%;
+    height: 200px;
+    background-color: white;
+    /*border-style:solid;
+    /*border-color: #009933;
+    border-width: 1px;*/
+    float:left;
+    margin:10px;
+    cursor:pointer;
+
+}
+.left:hover>img {
+    opacity: 0.3;
+    cursor:pointer;
+}
+.left:hover>a{
+    color: #B81111;
+    cursor:pointer;
+}
+.right{
+    width: 93%;
+    height: 100px;
+    background-color: white;
+    /*border-style:solid;
+    border-color: #8A1ECC;
+    border-width: 1px;*/
+    margin:10px;
+    display: flex;
+    align-items: center;
+    cursor:pointer;
+
+}
+.right:hover>img {
+    opacity: 0.3;
+    cursor:pointer;
+}
+.right:hover>a{
+    color: #B81111;
+    cursor:pointer;
+}
+
+.baseright img {
+    width:45%;
+    height:100px;
+    margin-right: 10px;
+}
+button{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    border-width: 1px;
+    border-color:grey;
+    color: grey;
+    margin:10px;
+    background-color: white;
+}
+button:hover{
+    font-size:16px;
+    font-family: "Times New Roman", Times, serif;
+    cursor:pointer;
+    color: white;
+    background-color:#C02D2D;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+ ::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    background: #272727;
+    border-radius:5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #B81111;
+    border-radius:5px;
+}
+.baseleft>.pag{
+    display: flex;
+    justify-content: center; /* Центрування по горизонталі */
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    background-color: white;
+    margin:10px;
+    cursor:pointer;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+
+}
+.pag .pagination {
+    position: relative;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #B81111;
+    backdrop-filter: blur(3px);
+    border-radius: 2px;
+    padding:0px;
+    margin-left: 90px;
+}
+.pag .pagination li {
+    list-style-type: none;
+    display: inline-block;
+}
+.pag .pagination li a {
+    position: relative;
+    padding: 15px 20px;
+    text-decoration: none;
+    color:white;
+    font-weight: 500;
+}
+.pag .pagination li a:hover,
+.pag .pagination li.active a {
+    background: rgba(255, 255, 255, 0.2);
+}

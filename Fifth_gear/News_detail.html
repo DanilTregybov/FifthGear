@@ -1,0 +1,203 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Detail</title>
+<link rel="stylesheet" type="text/css" href="News_detail.css">
+<link rel="stylesheet" type="text/css" href="comments.css">
+<script src="conf_news_del.js" language="javascript"></script>
+</head>
+<body>
+<div class="main">
+<div class="img"><a href="#top"><img src="arrow_up.png" height="50px" width="50px" alt="Зображення відсутнє"></a></div>
+<a name="top"></a>
+<div class="bod">
+<div class="menu">
+<object data="base.html" width="100%" height="65"></object>
+</div>
+<div class="content">
+<div class="baseleft">
+<!-- PHP Code to Fetch News Details -->
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fifth_gear";
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+die("Connection failed: " . $conn->connect_error);
+}
+
+$newsId = $_GET['id'];
+$result = $conn->query("SELECT id, title, poster, news_text, news_text2, news_text3, public_date FROM News WHERE id = $newsId");
+$newsData = $result->fetch_assoc();
+$posterBase64 = base64_encode($newsData['poster']);
+
+// Display News Details
+echo "<div class='poster' style='background-image: url(\"data:image/jpeg;base64, $posterBase64\");'>";
+echo "<span class='poster_title'>" . $newsData['title'] . "</span>";
+echo "<span class='poster_date'>Дата публікації: " . $newsData['public_date'] . "</span>";
+echo "</div>";
+
+echo "<div class='text_news'>";
+echo "<span>" . $newsData['news_text'] . "</span><br><br>";
+
+// Display News Shots
+$shotsResult = $conn->query("SELECT shot, shot2, shot3 FROM news_shots WHERE news = $newsId");
+$shotsData = $shotsResult->fetch_assoc();
+echo "<img class='news_shots' src='data:image/jpeg;base64, " . base64_encode($shotsData['shot']) . "' alt='Зображення відсутнє'><br>";
+echo "<span>" . $newsData['news_text2'] . "</span><br><br>";
+echo "<img class='news_shots' src='data:image/jpeg;base64, " . base64_encode($shotsData['shot2']) . "' alt='Зображення відсутнє'><br>";
+echo "<span>" . $newsData['news_text3'] . "</span><br><br>";
+echo "<img class='news_shots' src='data:image/jpeg;base64, " . base64_encode($shotsData['shot3']) . "' alt='Зображення відсутнє'><br>";
+echo "</div>";
+?>
+
+<hr align="center" width="95%" size="4" noshade color="#B81111" style="border-radius:5px; margin:0 0 0 30px;">
+
+<!-- Link to Related News -->
+<div class="link_to_news">
+<?php
+
+$result = $conn->query("SELECT COUNT(*) FROM news");
+$row = $result->fetch_row();
+$total_records = $row[0];
+$randomId = rand(1, $total_records);
+$relatedNewsResult = $conn->query("SELECT * FROM news WHERE id = $randomId");
+$relatedNewsData = $relatedNewsResult->fetch_assoc();
+$relatedNewsPosterBase64 = base64_encode($relatedNewsData['poster']);
+?>
+<span style="font-size:14pt; white-space:nowrap;">Читайте також:</span>
+<a href='News_detail.html?id=<?php echo $randomId; ?>'>
+<img class="link_poster" src="data:image/jpeg;base64, <?php echo $relatedNewsPosterBase64; ?>" alt="Постер новини">
+</a>
+<a href='News_detail.html?id=<?php echo $randomId; ?>'><span style="font-size:12pt;"><?php echo $relatedNewsData['title']; ?></span></a>
+</div>
+
+<!-- Review Section -->
+<div id="app">
+<article>
+<footer id="comments" class="comments-wrapper">
+<div id="comments-form" class="comments-form">
+<h2>Обговорення новини</h2>
+<form method="POST" action="create_comment.php" onsubmit="return validateComment()">
+<?php
+if (!isset($_SESSION['login'])) {
+echo "<div class='field-wrapper'>";
+echo "<label for='comment-text'>Коментар</label>";
+echo "<textarea name='text' id='comment-text' style='max-width: 600px;' placeholder='Потрібна авторизація' readonly></textarea>";
+echo "<div class='field-wrapper'>";
+echo "<input class='btn' type='submit' value='Додати коментар' disabled />";
+echo "</div>";
+} else {
+$result = $conn->query("SELECT id,name, email FROM users WHERE name='".$_SESSION['login']."'");
+$row = $result->fetch_assoc();
+$userId = $row['id'];
+echo "<div class='field-wrapper'>";
+echo "<label for='user'>Ім'я</label>";
+echo "<input type='text' name='user' value='" . $row['name'] . "' readonly />";
+echo "<input type='hidden' name='user_id' value='$userId'>";
+echo "<input type='hidden' name='news_id' value='$newsId'>";
+echo "</div>";
+
+echo "<div class='field-wrapper'>";
+echo "<label for='email'>Пошта</label>";
+echo "<input type='text' name='email' value='" . $row['email'] . "' readonly/>";
+echo "</div>";
+
+echo "<div class='field-wrapper'>";
+echo "<label for='comment-text'>Коментар</label>";
+echo "<textarea name='text' id='comment-text' style='max-width: 600px;'></textarea>";
+echo "<div class='field-wrapper'>";
+echo "<input class='btn' type='submit' name='comm' value='Додати коментар' />";
+echo "</div>";
+}
+?>
+</form>
+</div>
+<h2>Коментарі</h2>
+<?php
+$commentsResult = $conn->query("SELECT * FROM reviews WHERE news = $newsId");
+while ($comment = $commentsResult->fetch_assoc()) {
+$userResult = $conn->query("SELECT * FROM users WHERE id = " . $comment['name']);
+$commentUser = $userResult->fetch_assoc();
+
+echo "<ul class='comments'>";
+echo "<li>";
+echo "<div class='comment-author-meta'>";
+echo "<div class='user'>" . $commentUser['name'] . "</div>";
+if (isset($_SESSION['login']) && ($_SESSION['login'] == $commentUser['name'] | $_SESSION['login'] == 'admin')) {
+echo "<div class='delete-comment' title='Delete Comment'><a class='delete-comment' href='delete_news_reviews.php?rew_id=" . $comment['id'] . "&news_id=" . $newsId . "' onclick='return delete_it()'>&times;</a></div>";
+}
+echo "</div>";
+echo "<div class='comment-text'>";
+echo "<p style='white-space: pre-line'>" . $comment['text'] . "</p>";
+echo "</div>";
+echo "<div class='comment-meta'>";
+echo "<span class='comment-date'>" . $comment['date'] . "</span>";
+echo "<a class='comm_a' href='#comments-form' v-scroll-to=\"#comments-form\">Reply</a>";
+echo "</div>";
+echo "</li>";
+echo "</ul>";
+}
+?>
+</footer>
+</article>
+</div>
+</div>
+
+<div class="baseright">
+<div class="header">
+<h2>Новини тижня</h2>
+<button type="button" onclick="location.href='News.html'">Новини</button>
+</div>
+<?php
+$randNewsResult = $conn->query("SELECT id, title, poster FROM News ORDER BY id DESC LIMIT 4");
+while ($randNewsData = $randNewsResult->fetch_assoc()) {
+$randNewsPoster = base64_encode($randNewsData['poster']);
+echo "<div class='right'>";
+echo "<img class='img_r' src='data:image/jpeg;base64, $randNewsPoster' alt='Зображення відсутнє'>";
+echo "<a href='News_detail.html?id=" . $randNewsData['id'] . "'><span>" . $randNewsData['title'] . "</span></a>";
+echo "</div>";
+}
+?>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function validateComment() {
+var commentText = document.getElementById('comment-text').value;
+var regex = /(<([^>]+)>)/ig; // Regex to check for HTML tags
+
+if (commentText === '' ) {
+        alert('Будь ласка, заповніть поле Коментар');
+        return false; // Prevents the form from being submitted
+    }
+
+// Check for HTML tags in the comment text
+if (regex.test(commentText)) {
+alert('Коментар містить недопустимі HTML теги');
+return false; // Prevent form submission
+}
+
+// Check for inappropriate language or content (you can extend this part)
+var inappropriateWords = ['bad', 'inappropriate', 'offensive'];
+var lowerCaseComment = commentText.toLowerCase();
+for (var i = 0; i < inappropriateWords.length; i++) {
+if (lowerCaseComment.includes(inappropriateWords[i])) {
+alert('Коментар містить недопустимий вміст');
+return false; // Prevent form submission
+}
+}
+
+this.form.submit();
+}
+</script>
+<object data="footer.html" width="100%" height="305"></object>
+</body>
+</html>
